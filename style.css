@@ -1,0 +1,17 @@
+#gameBoard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px;
+    width: 300px;
+    height: 300px;
+}
+
+.tile {
+    background-color: #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    outline: 1px solid;
+}
