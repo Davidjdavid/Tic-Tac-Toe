@@ -2,8 +2,8 @@
 
 let board = [];
 let displayString = ""
-player1 = 1
-player2 = 2
+let player1 = 1
+let player2 = 2
 
 // Starts the game. New game runs whenever you refresh the page or someone wins
 newGame();
@@ -41,9 +41,8 @@ function displayBoard() {
 }
 
 // Checks to make sure the space you are selecting is set to 0 (a.k.a empty)
-// TODO: Check to make sure the inputs by the player are valid
 function validMove(xChord, yChord) {
-    if (board[xChord][yChord] === 0) {
+    if (((xChord && yChord) >= 0 && (xChord && yChord) <= 2) && (board[xChord][yChord] === 0) && !(isNaN(xChord) && isNaN(yChord))) {
         return true;
     }
     return false;
@@ -94,20 +93,38 @@ function checkWin() {
 // Prompts the player to pick a space to put their space. Runs itself for the other player forever
 // TODO: Make selecting the area you want to select can handle invalid or null options.
 // TODO: Make it easier to understand how to handle the user input instead of blank prompt boxes
+// TODO: Fix bug with the invalid and or error else catches. They seem to skip the players turn. Need to make and use a new fuction that
+// passes the players turn from one to the other
 function turn(player) {
-    let choiceHor = prompt();
-    let choiceVer = prompt();
+    let choiceHor = prompt(player + " enter the x chord");
+    if(!choiceHor) {
+        return;
+    }
+    let choiceVer = prompt(player + " enter the y chord");;
+    if(!choiceVer) {
+        return;
+    }
     if(validMove(choiceHor, choiceVer)) {
-        console.log("valid move");
-        board[choiceHor][choiceVer] = player;
-        displayBoard();
-        if(player === 1) {
-            turn(player2);
-        } else {
-            turn(player1);
+        try {
+            console.log("valid move");
+            board[choiceHor][choiceVer] = player;
+            displayBoard();
+            if(player === 1) {
+                turn(player2);
+            } else {
+                turn(player1);
+            }
+        } catch (error)  {
+            console.log("Error, please try again.");
+            turn(player);
         }
+        
     } else {
-        console.log("Space already taken, pick another spot");
+        console.log("Invalid move, try again");
         turn(player);
     }
+}
+
+function switchPlayer() {
+    // TODO: Switch the turn order. Maybe a boolean
 }
